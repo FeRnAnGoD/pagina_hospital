@@ -138,11 +138,16 @@ class HospitalOTController:
                     "duracion": AUTO_RESET_SECONDS,
                     "flag": FLAG_OT_FIRE
                 }
-                print(f"[OT WEBHOOK] Enviando señal de alarma a Raspberry Pi ({raspi_url})...")
-                res = requests.post(raspi_url, json=payload, timeout=1.5)
-                print(f"[OT WEBHOOK] Respuesta Raspberry Pi: status {res.status_code}")
+                print(f"[OT WEBHOOK] Disparando POST a Raspberry Pi: {raspi_url} ...", flush=True)
+                res = requests.post(
+                    raspi_url,
+                    json=payload,
+                    headers={"Content-Type": "application/json"},
+                    timeout=4.0
+                )
+                print(f"[OT WEBHOOK] ✅ Respuesta recibida de Raspberry Pi -> HTTP {res.status_code}: {res.text}", flush=True)
             except Exception as e:
-                print(f"[OT WEBHOOK] Nota: Raspberry Pi no disponible o timeout ({e})")
+                print(f"[OT WEBHOOK] ❌ Error conectando a Raspberry Pi ({raspi_url}): {e}", flush=True)
 
         threading.Thread(target=_dispatch_raspi, daemon=True).start()
 
