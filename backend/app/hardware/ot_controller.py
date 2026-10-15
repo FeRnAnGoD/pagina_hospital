@@ -10,6 +10,7 @@ import time
 import random
 import threading
 import os
+import requests
 
 FLAG_OT_FIRE = "FLAG{h0sp1t4l_s4b0t4g3}"
 
