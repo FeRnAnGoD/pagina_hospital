@@ -5,10 +5,7 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Dependencias del sistema (solo lo necesario)
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+# Instalar dependencias Python (todas usan wheels precompilados, no se necesita gcc)
 
 # Instalar dependencias Python (incluye gunicorn para producción)
 COPY requirements.txt .
