@@ -1,40 +1,20 @@
 services:
-  # ── Backend Flask / Gunicorn ──────────────────────────
-  backend:
+  # ── Hospital Clínico Ciberlab (Contenedor Unificado) ──
+  hospital:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
-    container_name: hospital_backend
+    container_name: ciberlab-hospital-ctf
     restart: unless-stopped
+    ports:
+      - "8002:80"
     environment:
       - FLASK_ENV=production
       - PYTHONUNBUFFERED=1
+      - RASPI_OT_URL=http://10.10.20.67:5050/ot/hospital
     volumes:
-      # Persistir la base de datos SQLite fuera del contenedor
-      - hospital_db:/app/app/data
-    networks:
-      - hospital_net
-    # El backend NO expone puertos al host (solo accesible internamente)
-
-  # ── Frontend React + Nginx ────────────────────────────
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: hospital_frontend
-    restart: unless-stopped
-    ports:
-      - "8002:80"          # Puerto expuesto en la máquina Debian
-    depends_on:
-      - backend
-    networks:
-      - hospital_net
+      - hospital_db_data:/app/backend/app/data
 
 volumes:
-  hospital_db:
+  hospital_db_data:
     name: hospital_db_data
-
-networks:
-  hospital_net:
-    driver: bridge
-    name: hospital_network

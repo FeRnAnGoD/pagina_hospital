@@ -127,6 +127,25 @@ class HospitalOTController:
         print(f"[OT AUTO-REARME] Sistema se restablecerá automáticamente en {AUTO_RESET_SECONDS}s")
         print("="*70)
 
+        # Enviar despacho OT por HTTP a la Raspberry Pi de la maqueta
+        def _dispatch_raspi():
+            try:
+                raspi_url = os.getenv("RASPI_OT_URL", "http://10.10.20.67:5050/ot/hospital")
+                payload = {
+                    "evento": "INCENDIO_HOSPITAL",
+                    "origen": "CENTRAL_GASES_OXIGENO",
+                    "motivo": reason,
+                    "duracion": AUTO_RESET_SECONDS,
+                    "flag": FLAG_OT_FIRE
+                }
+                print(f"[OT WEBHOOK] Enviando señal de alarma a Raspberry Pi ({raspi_url})...")
+                res = requests.post(raspi_url, json=payload, timeout=1.5)
+                print(f"[OT WEBHOOK] Respuesta Raspberry Pi: status {res.status_code}")
+            except Exception as e:
+                print(f"[OT WEBHOOK] Nota: Raspberry Pi no disponible o timeout ({e})")
+
+        threading.Thread(target=_dispatch_raspi, daemon=True).start()
+
         # Hilo de auto-rearme: espera AUTO_RESET_SECONDS y luego llama a reset_system()
         def _auto_reset():
             time.sleep(AUTO_RESET_SECONDS)
