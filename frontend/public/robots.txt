@@ -1,0 +1,11 @@
+# ========================================================
+# Hospital Clínico Metropolitano Ciberlab (HSR)
+# Directivas de Rastreo para Motores de Búsqueda
+# ========================================================
+
+User-agent: *
+Disallow: /fichas
+Disallow: /bms
+Disallow: /respaldo
+Disallow: /api/patients/backup/
+Disallow: /api/ot/actuators/

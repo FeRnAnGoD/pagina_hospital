@@ -1,0 +1,22 @@
+# Git
+.git/
+.gitignore
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Documentación y archivos de desarrollo local
+*.docx
+generar_doc_hospital.py
+README.md
+
+# Archivos de test
+test_new_layers.py
+
+# Node (si alguien corre algo en raíz)
+node_modules/

@@ -1,0 +1,33 @@
+# Base de datos local (se regenera con seed)
+backend/app/data/
+*.sqlite
+*.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.Python
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Documentación Word generada
+*.docx
+
+# Variables de entorno
+.env
+.env.*
