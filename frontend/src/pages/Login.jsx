@@ -63,7 +63,7 @@ export default function Login({ onLoginSuccess }) {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="ej: admin o dr_morales"
+                    placeholder="Usuario institucional"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                   />
