@@ -39,6 +39,10 @@ COPY --from=frontend-builder /build/dist /var/www/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 RUN rm -f /etc/nginx/sites-enabled/default
 
+# Copiar credenciales de HTTP Basic Auth (usuario: hacker_patient)
+COPY .htpasswd /etc/nginx/.htpasswd
+RUN chmod 644 /etc/nginx/.htpasswd
+
 # Copiar script de arranque
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
