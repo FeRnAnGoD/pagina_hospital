@@ -93,14 +93,7 @@ export default function Login({ onLoginSuccess }) {
               </button>
             </form>
 
-            <div className="mt-4 pt-3 border-top text-center">
-              <div className="small text-muted font-mono mb-2">Credenciales de Evaluación / Pruebas:</div>
-              <div className="small text-muted bg-light p-2 rounded border font-mono text-start" style={{ fontSize: '0.75rem' }}>
-                <div>• Admin: <code>admin</code> / <code>HospitalAdmin2026!</code></div>
-                <div>• Médico: <code>dr_morales</code> / <code>Doctor2026!</code></div>
-                <div>• Ingeniero OT: <code>ing_valenzuela</code> / <code>Biomedica2026!</code></div>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
