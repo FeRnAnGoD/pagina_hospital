@@ -70,6 +70,17 @@ def inspect_query_string(input_str):
         WAF_STATE["bypassed_count"] += 1
         return False, {"bypassed": True, "reason": "Cabecera o Red Intranet Médica Autorizada"}
 
+    # Detección y bloqueo estricto de herramientas de escaneo y extracción automatizada (sqlmap, etc.)
+    user_agent = request.headers.get('User-Agent', '')
+    if 'sqlmap' in user_agent.lower():
+        WAF_STATE["blocked_count"] += 1
+        return True, {
+            "rule_id": "WAF-RULE-SCANNER",
+            "rule_name": "Scanner.Tool.SqlmapDetected",
+            "severity": "EMERGENCY",
+            "description": "Herramienta automatizada de inyección SQL (sqlmap) detectada y neutralizada."
+        }
+
     # Evaluación de reglas de filtrado
     for rule in WAF_RULES:
         if rule["pattern"].search(input_str):

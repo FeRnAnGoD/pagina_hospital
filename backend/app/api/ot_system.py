@@ -93,7 +93,6 @@ def override_actuators():
             'alert_triggered': True,
             'status': alarm_result['status'],
             'effect': alarm_result['effect'],
-            'flag': alarm_result['flag'],
             'message': alarm_result['message']
         }), 200
 
