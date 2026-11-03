@@ -42,6 +42,13 @@ WAF_RULES = [
         "pattern": re.compile(r"(?i)\bdrop\s+table\b"),
         "severity": "EMERGENCY",
         "description": "Comando destructivo DROP TABLE."
+    },
+    {
+        "id": "WAF-RULE-105",
+        "name": "SQLi.AutomatedBlindExtraction",
+        "pattern": re.compile(r"(?i)\b(hex|substr|substring|unicode|ascii|load_extension|char|count|length)\s*\("),
+        "severity": "CRITICAL",
+        "description": "Detección de funciones de extracción de datos a ciegas (Blind SQLi)."
     }
 ]
 
@@ -61,15 +68,6 @@ def inspect_query_string(input_str):
     if not WAF_STATE["enabled"] or not input_str:
         return False, None
 
-    # Verificación de bypass por Cabecera de Intranet Médica o IP Local
-    is_internal_header = request.headers.get('X-Hospital-Internal', '').lower() in ['true', '1', 'yes']
-    is_forwarded_local = request.headers.get('X-Forwarded-For', '') in ['127.0.0.1', 'localhost', '10.0.0.1']
-    is_param_bypass = request.args.get('internal_bypass', '') in ['1', 'true']
-
-    if is_internal_header or is_forwarded_local or is_param_bypass:
-        WAF_STATE["bypassed_count"] += 1
-        return False, {"bypassed": True, "reason": "Cabecera o Red Intranet Médica Autorizada"}
-
     # Detección y bloqueo estricto de herramientas de escaneo y extracción automatizada (sqlmap, etc.)
     user_agent = request.headers.get('User-Agent', '')
     if 'sqlmap' in user_agent.lower():
@@ -80,6 +78,15 @@ def inspect_query_string(input_str):
             "severity": "EMERGENCY",
             "description": "Herramienta automatizada de inyección SQL (sqlmap) detectada y neutralizada."
         }
+
+    # Verificación de bypass por Cabecera de Intranet Médica o IP Local
+    is_internal_header = request.headers.get('X-Hospital-Internal', '').lower() in ['true', '1', 'yes']
+    is_forwarded_local = request.headers.get('X-Forwarded-For', '') in ['127.0.0.1', 'localhost', '10.0.0.1']
+    is_param_bypass = request.args.get('internal_bypass', '') in ['1', 'true']
+
+    if is_internal_header or is_forwarded_local or is_param_bypass:
+        WAF_STATE["bypassed_count"] += 1
+        return False, {"bypassed": True, "reason": "Cabecera o Red Intranet Médica Autorizada"}
 
     # Evaluación de reglas de filtrado
     for rule in WAF_RULES:
