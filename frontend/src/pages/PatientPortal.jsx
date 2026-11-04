@@ -118,7 +118,7 @@ export default function PatientPortal({ user, isInternalView = false }) {
                 <input
                   type="text"
                   className="form-control form-control-lg fs-6"
-                  placeholder={isStaff ? "Buscar por RUT, Nombre del Paciente o Diagnóstico..." : "Ingrese RUT (ej: 14.205.280-K) o Nombre del Paciente para consultar sala..."}
+                  placeholder={isStaff ? "Buscar por RUT, Nombre del Paciente o Diagnóstico..." : "Ingrese RUT o Nombre del Paciente para consultar sala..."}
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                 />
